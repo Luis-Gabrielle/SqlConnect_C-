@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<br />
+<div class="text-center">
+    <h1 class="display-4 text-light">Connection mySQL to ASP.NET</h1>
+  
+</div>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <td scope="col" class="text-white">Add Users</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+    
+    @* input user *@
+    <form asp-action="InsertUser" method="POST">
+    <tr>
+
+        <td><input type="text" class="form-control" placeholder="Username" name="username" required /></td>
+        <td><input type="password" class="form-control" placeholder="Password" name="password" required /></td>
+        <td></td>
+        <td><input type="submit" value="Submit" class="btn btn-primary" /></td>
+
+    </tr>
+    </form>
+</table>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">UserID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Password</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user_tbl in Model)
+        {
+            <tr>
+                <form method="post" asp-action="UpdateUser">
+                    <input type="hidden" name="userID" value="@user_tbl.userID" />
+                <td>@user_tbl.userID</td>
+                <td>
+                    <input type="text" name="username" value="@user_tbl.username" class="form-control" required />
+                </td>
+                <td>
+                    <input type="password" name="password" value="@user_tbl.password" class="form-control" required />
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary">
+                        <svg width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25zM21 6.25l-3-3a1 1 0 0 0-1.41 0l-2.34 2.34 3.75 3.75 2.34-2.34a1 1 0 0 0 0-1.41z" />
+                        </svg>
+                    </button>
+                    <button type="submit" class="btn btn-danger" asp-action="deleteUser" asp-route-userID="@user_tbl.userID">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                        </svg>
+                    </button>
+
+
+
+                </td>
+                </form>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Notification Modal -->
+@if (TempData["Message"] != null)
+{
+    <div class="modal fade show" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true" style="display: block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
+                </div>
+                <div class="modal-body">
+                    @TempData["Message"]
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function closeModal() {
+            document.getElementById('notificationModal').style.display = 'none';
+        }
+    </script>
+}

@@ -1,0 +1,93 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    background: black;
+    margin-bottom: 60px;
+}
+h1 {
+    background: radial-gradient( circle at 100%, #00edff, #003092 50%, #003092 75%, #ffffff 75% );
+    font-weight: 900 !important;
+    font-family: 'Sixtyfour Convergence', sans-serif;
+    background-size: 200% auto;
+    color: #000;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: animatedTextGradient 1.5s linear infinite;
+}
+.table {
+    border-radius: 25px !important;
+    border: 1px solid white !important;
+    overflow: hidden !important;
+    padding: 10px;
+    background: #000 !important;
+}
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #000000 !important;
+    background-clip: padding-box;
+    border: 1px solid rgb(245 245 245) !important;
+    border-radius: .3rem;
+    outline: 0;
+    color: white;
+}
+    .table th,
+    .table td {
+        color: white;
+        padding: 5px; 
+    }
+.btn {
+    border-radius: 15px;
+    background: #003092 !important;
+    color: white;
+}
+.navbar{
+    border: 1px solid white;
+    background: transparent;
+}
+.form-control {
+    background-color: transparent;
+    border: none;
+    color: white;
+    border-radius: 0;
+    padding: 8px 0;
+}
+
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5); 
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-bottom: 2px solid #00ffcc;
+        box-shadow: none;
+        background-color: transparent;
+        color: white;
+    }
+
+  
+@keyframes animatedTextGradient {
+    to {
+        background-position: 200% center;
+    }
+}

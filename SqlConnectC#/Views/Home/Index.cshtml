@@ -4,31 +4,39 @@
 <br />
 <div class="text-center">
     <h1 class="display-4 text-light">Connection mySQL to ASP.NET</h1>
-  
 </div>
-<br />
-<table class="table">
-    <thead>
+
+
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+            <td scope="col" style="font-weight: bold;"class="text-white">
+                Add Users
+            </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+        <form asp-action="InsertUser" method="POST">
         <tr>
-            <td scope="col" class="text-white">Add Users</td>
+            <td><input type="text" class="form-control" placeholder="Username" name="username" required /></td>
+            <td><input type="password" class="form-control" placeholder="Password" name="password" required /></td>
             <td></td>
-            <td></td>
-            <td></td>
+            <td><input type="submit" value="Submit" class="btn btn-primary" /></td>
         </tr>
-    </thead>
-    
-    @* input user *@
-    <form asp-action="InsertUser" method="POST">
-    <tr>
+        </form>
+    </table>
 
-        <td><input type="text" class="form-control" placeholder="Username" name="username" required /></td>
-        <td><input type="password" class="form-control" placeholder="Password" name="password" required /></td>
-        <td></td>
-        <td><input type="submit" value="Submit" class="btn btn-primary" /></td>
+<form method="get" asp-action="Index">
+    <div class="input-group mb-3" style="border: 1px solid white; width: 50%; border-radius: 15px;">
+        <input type="text" name="searchQuery" class="form-control" placeholder="Search users..." value="@ViewBag.SearchQuery" style="margin-left: 5px;" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
 
-    </tr>
-    </form>
-</table>
+
 <table class="table">
     <thead>
         <tr>
@@ -39,38 +47,97 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var user_tbl in Model)
+        @foreach (var user in Model)
         {
             <tr>
                 <form method="post" asp-action="UpdateUser">
-                    <input type="hidden" name="userID" value="@user_tbl.userID" />
-                <td>@user_tbl.userID</td>
+                    <input type="hidden" name="userID" value="@user.userID" />
+                <td>@user.userID</td>
                 <td>
-                    <input type="text" name="username" value="@user_tbl.username" class="form-control" required />
+                    <input type="text" name="username" value="@user.username" class="form-control" required />
                 </td>
                 <td>
-                    <input type="password" name="password" value="@user_tbl.password" class="form-control" required />
+                    <input type="password" name="password" value="Enter new Password" class="form-control" required />
                 </td>
                 <td>
-                    <button type="submit" class="btn btn-primary">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <path d="M3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25zM21 6.25l-3-3a1 1 0 0 0-1.41 0l-2.34 2.34 3.75 3.75 2.34-2.34a1 1 0 0 0 0-1.41z" />
-                        </svg>
-                    </button>
-                    <button type="submit" class="btn btn-danger" asp-action="deleteUser" asp-route-userID="@user_tbl.userID">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                        </svg>
-                    </button>
-
-
-
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-danger" asp-action="deleteUser" asp-route-userID="@user.userID">Delete</button>
                 </td>
                 </form>
             </tr>
         }
     </tbody>
 </table>
+
+<!-- Pagination -->
+<nav>
+    <ul class="pagination">
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { searchQuery = ViewBag.SearchQuery, page = i })">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
+        });
+    </script>
+
+    <!-- Bootstrap Modal for Error -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @TempData["ErrorMessage"]
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+        });
+    </script>
+
+    <!-- Bootstrap Modal for Success -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="successModalLabel">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @TempData["SuccessMessage"]
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 
 <!-- Notification Modal -->
 @if (TempData["Message"] != null)
